@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.4</version>
+    <date>2023-09-18T11:56:16Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Php8.1Monitor</template>
+            <name>Php8.1Monitor</name>
+            <description>php8.1 için var olan php7.4 ten uyarlandı.</description>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <name>$1/sec 8</name>
+                    <key>php-fpm8.1[&quot;accepted conn&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    <delay>60</delay>
+                    <history>7d</history>
+                    <preprocessing>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>$1 8</name>
+                    <key>php-fpm8.1[&quot;active processes&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    <delay>60</delay>
+                    <history>7d</history>
+                </item>
+                <item>
+                    <name>$1 8</name>
+                    <key>php-fpm8.1[&quot;idle processes&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    <delay>60</delay>
+                    <history>7d</history>
+                </item>
+                <item>
+                    <name>$1 8</name>
+                    <key>php-fpm8.1[&quot;listen queue&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    <delay>60</delay>
+                    <history>7d</history>
+                </item>
+                <item>
+                    <name>$1 8</name>
+                    <key>php-fpm8.1[&quot;listen queue len&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    <delay>60</delay>
+                    <history>7d</history>
+                </item>
+                <item>
+                    <name>$1/sec 8</name>
+                    <key>php-fpm8.1[&quot;slow requests&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    <delay>60</delay>
+                    <history>7d</history>
+                    <preprocessing>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                </item>
+                <item>
+                    <name>$1 8</name>
+                    <key>php-fpm8.1[&quot;total processes&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    <delay>60</delay>
+                    <history>7d</history>
+                </item>
+                <item>
+                    <name>CPU Usage from php8-fpm</name>
+                    <key>proc.cpu.util[php-fpm8.1]</key>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                </item>
+                <item>
+                    <name>Memory(rss) Usage from php8.1-fpm</name>
+                    <key>proc.mem[php-fpm8.1,,,,rss]</key>
+                    <units>B</units>
+                </item>
+                <item>
+                    <name>Memory(vsize) Usage from php8-fpm</name>
+                    <key>proc.mem[php-fpm8.1,,,,vsize]</key>
+                    <units>B</units>
+                </item>
+                <item>
+                    <name>master process count php8</name>
+                    <key>proc.num[php-fpm8.1,,,master]</key>
+                    <delay>60</delay>
+                    <history>7d</history>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=0</expression>
+                            <name>php8.1-fpm master process dead</name>
+                            <priority>AVERAGE</priority>
+                        </trigger>
+                    </triggers>
+                </item>
+            </items>
+            <macros>
+                <macro>
+                    <macro>{$PHP_FPM_STATUS_URL}</macro>
+                    <value>http://localhost:10061/php-fpm_status</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+    <graphs>
+        <graph>
+            <name>CPU Usage from php8-fpm</name>
+            <graph_items>
+                <graph_item>
+                    <color>F63100</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>proc.cpu.util[php-fpm8.1]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>Memory Usage from php8-fpm</name>
+            <graph_items>
+                <graph_item>
+                    <color>199C0D</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>proc.mem[php-fpm8.1,,,,rss]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>0080FF</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>proc.mem[php-fpm8.1,,,,vsize]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>php8-fpm Accepted Connections / sec</name>
+            <graph_items>
+                <graph_item>
+                    <color>C80000</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>php-fpm8.1[&quot;accepted conn&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>php8-fpm Listen Queue</name>
+            <graph_items>
+                <graph_item>
+                    <color>EE0000</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>php-fpm8.1[&quot;listen queue len&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>00EE00</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>php-fpm8.1[&quot;listen queue&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>php8-fpm Processes</name>
+            <graph_items>
+                <graph_item>
+                    <color>C80000</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>php-fpm8.1[&quot;total processes&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <color>00C800</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>php-fpm8.1[&quot;active processes&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <color>0000C8</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>php-fpm8.1[&quot;idle processes&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <name>php8-fpm Slow Requests / sec</name>
+            <graph_items>
+                <graph_item>
+                    <color>C80000</color>
+                    <item>
+                        <host>Php8.1Monitor</host>
+                        <key>php-fpm8.1[&quot;slow requests&quot;,{$PHP_FPM_STATUS_URL}]</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+</zabbix_export>
